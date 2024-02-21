@@ -1,6 +1,6 @@
 # Virtual-Privacy
 
-Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert communications over insecure networks. Featuring four levels of encryption, 24 host iterations (command and control, file transfers, and a chatroom), a number of options for generating credentials, and the ability to encrypt or decrypt a file, single level of a directory directory, or a path recursively, with a single command. VP employs elements of SSH, PGP, PKI, and encrypting data at rest to maintain confidentiality, integrity, authenticity and evasion. Communications can be wrapped in TSL on top of the VP network security protocol. 
+Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert communications over insecure networks. Featuring four levels of encryption, 24 host iterations (command and control, file transfers, and a chatroom), a number of options for generating credentials, and additonally the ability to encrypt a file, directory, or an entire path recursively with a single command. VP employs elements of SSH, PGP, and PKI to maintain confidentiality, integrity, and authenticity for network communications.
 
 It should be noted, that although the Chatroom operations are styled after AOL chat rooms circa 1999, they can be layered with encryption to be a suitable communication medium for individuals working in contemporary spycraft.
 
