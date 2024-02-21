@@ -124,15 +124,8 @@ python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./key.
 pem 
 ```
 
-### 
 
-## **Modes of operation**
-
-5) Decryption
-6) Database
-
-
-## **Generate Credentials
+## **Generate Credentials**
 
 Credential operations can be accessed via the generate-pki runtime argument:
 
