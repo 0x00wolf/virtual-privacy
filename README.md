@@ -4,6 +4,10 @@ Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert commun
 
 It should be noted, that although the Chatroom operations are styled after AOL chat rooms circa 1999, they can be layered with encryption to be a suitable communication medium for individuals working in contemporary spycraft.
 
+## In this repository:
+
+You will find a comprehensive manual that will teach you how to use all of the easy features to conduct covert communications that the program offers!
+
 ## Index:
 
 1) [Installation](#installation)
