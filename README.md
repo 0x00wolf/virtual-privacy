@@ -154,10 +154,6 @@ options are wrappers for OpenSSL, which allow VP users to credentials for
 SSL on the fly, or establish more in depth PKI, including a root 
 Certificate Authority. 
 
----
-
-## **Credential Operations:**
-
 1) [rsa](#rsa)
 2) [self-sign](#self-sign)
 3) [fast-gen](#fast-gen)
