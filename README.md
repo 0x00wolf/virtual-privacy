@@ -4,6 +4,45 @@ Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert commun
 
 It should be noted, that although the Chatroom operations are styled after AOL chat rooms circa 1999, they can be layered with encryption to be a suitable communication medium for individuals working in contemporary spycraft.
 
+## Index:
+
+1) [Installation](#installation)
+2) [VP Encryption Options](#vp_encryption_options)
+3) [Generate Credentials]
+4) [Generating Credentials](#generating-credentials)
+5) [Host Operations](#host_operations)
+6) [Encryption & Decryption](#encryption_&_decryption_options)
+
+
+## Installation
+
+VP uses one non-standard Python library, `pycryptodome`. VP also requires OpenSSL.
+
+**To install Virtual-Privacy:**
+
+1) Download Virtual-Privacy:
+
+```bash
+git clone https://github.com/0x00wolf/virtual-privacy
+```
+
+2) Navigate to the parent directory:
+
+```bash
+cd ./virtual-privacy
+```
+
+3) Create a virtual environment, activate it, and install pycryptodome:
+
+```bash
+python -m venv venv
+source ./venv/bin/activate
+pip install pycryptodome
+```
+
+4) Generate some credentials, throw some reverse shells, and have fun!
+
+
 ## VP Encryption Options
 
 1) [Base64](#base64)
@@ -11,7 +50,7 @@ It should be noted, that although the Chatroom operations are styled after AOL c
 3) [VPP](#vpp)
 4) [SSL & VPP](#vpp_&_ssl)
 
-#### Base64
+### Base64
 
 By default all communications are encoded with Base64. Although this 
 doesn't provide confidentially, integrity, or authenticity, it provides a 
@@ -28,7 +67,7 @@ python vp.py --server c2 --host 0.0.0.0 --port 1337
 python vp.py -c c2 -ip 192.168.2.16 -p 1337
 ```
 
-#### SSL
+### SSL
 
 VP's second level of encryption allows users to encrypt communications with 
 TLSv1.3. SSL provides end-to-end encryption, alternatively, it also enables 
@@ -52,7 +91,7 @@ python vp.py -c c2 -crt ./path/cert.crt -ip www.bobcats.com -p 1337
 ```
 
 
-#### VPP
+### VPP
 
 The Virtual Privacy Protocol provides authenticity, confidentiality, and 
 integrity. It utilizes a hybrid encryption model, and additionally 
@@ -74,20 +113,17 @@ generating an RSA keypair, see [Generate Credentials](#generate-credentials).
 python vp.py -pki rsa
 
 # Server side (short form)
-python vp.py -s c2 -pr ./key.pem -pu ./cert.crt -ip 0.0.0.0 -p 1337
+python vp.py -s c2 -pr ./key.pem -ip 0.0.0.0 -p 1337
 
 # Client side (long form)
 python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./key.
 pem 
 ```
 
-#### 
+### 
 
 ## **Modes of operation**
 
-1) [Generate Credentials](#generate-credentials)
-2) [Client & Server Operations](#client_&_server_operations)
-4) [Encryption & Decryption Operations](#encryption_&_decryption_options)
 5) Decryption
 6) Database
 
