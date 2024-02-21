@@ -6,7 +6,7 @@ It should be noted, that although the Chatroom operations are styled after AOL c
 
 ## In this repository:
 
-You will find a comprehensive manual that will teach you how to use all of the easy features to conduct covert communications that the program offers!
+You will find a comprehensive manual that will teach you how to use all of the easy features that the program offers to conduct covert communications!
 
 ## Index:
 
