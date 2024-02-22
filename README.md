@@ -1,12 +1,12 @@
 # Virtual-Privacy
 
-Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert communications over insecure networks, and secure data storage. VP features 4 levels of encryption, 24 host iterations (command and control, file transfers, and a chatroom), and a number of options for generating credentials. VP additonally offers the ability to encrypt a file, directory, or an entire path recursively with optional RSA signature verification for CIA for data at rest, or in transit. VP features a unique network security protocol that emulates elements of other widely addopted security protocols like SSH, PGP, and SSL.
+Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert communications over insecure networks, and secure data storage. VP features 4 levels of encryption, 24 host iterations (command and control, file transfers, and a chatroom), and a number of options for generating credentials. VP additonally offers the ability to encrypt a file, directory, or an entire path recursively. VP features a unique network security protocol that emulates and incorporates other widely addopted security protocols like SSH, PGP, and SSL. 
 
-It should be noted, that although the Chatroom operations are styled after AOL chat rooms circa 1999, they can be layered with encryption to be a suitable communication medium for individuals working in contemporary spycraft.
+It should be noted, the host operation, chat, is styled after AOL chat rooms circa 1999, but with the added feature of layered encryption to create a communication medium suitable for individuals working in contemporary spycraft.
 
-## In this repository:
+## In this README.md:
 
-You will find a comprehensive manual that will teach you how to use all of the easy features that the program offers to conduct covert communications!
+You will find a comprehensive manual that will teach you how to use all of the easy features that the program offers to conduct covert communications, and encryted data storage!
 
 
 ---
@@ -53,6 +53,7 @@ pip install pycryptodome
 
 4) Generate some credentials, throw some reverse shells, and have fun!
 
+**At runtime:** The program will check to see if the following directories exist in the program's parent directory or it will generate them: ./keys/local, ./keys/remote, and ./data. The program uses the runtime `--user` | `-u` argument to select the SQL database to use, allowing users to create multiple databases for different purposes by simply creating a new user key. See [user](#user) for more information.
 
 ---
 
@@ -143,7 +144,7 @@ utilize a common port like 443, or 853 for the server connection, which
 would make traffic look like HTTPs, DoT, or DoH.
 
 See [Generate Credentials](#generate-credentials) for VP's built in options 
-for producing the required credentials. Fast-gen, in particular, will 
+for producing the required credentials. Fast-gen, [fast-gen](#fast-gen), in particular, will 
 immediately spit out everything you need.
 
 
@@ -176,19 +177,29 @@ python vp.py -c c2 -ip 192.168.2.15 -p 1337 -crt ./cert.crt
 ## VPP
 
 The Virtual Privacy Protocol provides authenticity, confidentiality, and 
-integrity. It utilizes hybrid encryption, and 
-signature verification for each transmission. Specifically, VPP uses 
-ChaCha20-Poly1305 AEAD wrapped in RSA. furthermore 
+integrity. It utilizes hybrid encryption, and signature verification for each transmission. VPP requires that both parties have exchanged RSA public keys in advance. The server administrator must register the remote user's public key in the runtime SQL database in advance of the client connecting. See [Database Operations](#database_operations), specifically [add-key](#add_key). The client has to provide the server's RSA public key as a runtime argument. 
+For detailed information on generating an RSA keypair, see [Generate Credentials](#generate-credentials).
 
-VPP requires that both parties have exchanged RSA public keys in advance. 
-The server administrator must register the remote user's public key in the 
-runtime SQL database in advance of the client connecting. See [Database 
-Operations](#database_operations), specifically [add-key](#add_key). The 
-client has to provide the server's RSA public key as a runtime argument. 
-For detailed information on generating an RSA keypair, see [Generate 
-Credentials](#generate-credentials).
+**VPP authentication wors as follows:**
 
-To add Client RSA public keys to the runtime SQL database, see: 
+Client side:
+
+1) The client’s plaintext RSA public key is signed using their private key.
+2) The Client’s plaintext public key is encrypted with a new 256-bit session key.
+3) The session key is wrapped with the server’s RSA public key.
+4) The wrapped session key is transmitted to the server.
+
+Server side:
+
+1) The server accepts a buffer containing the wrapped key & VP’s protocol header and attempts to unwrap the key.
+2) If the key was unwrapped, the server accepts a buffer of a size relative to information provided by the protocol header.
+3) The server slices off the first 384 bytes of the payload (the signature), and attempts to decrypt the remainder with the unwrapped key.
+4) The server verifies the contents of the decrypted message are a known RSA public key in the runtime SQL database.
+5) The server verifies that the signature belongs to the owner of the known key.
+
+**After authentication:**
+
+The client and server continue to use the same steps, however, the composition of the messages changes somewhat. Both client and server prepare a payload of containing the ciphertext data, a signature of the data unencrypted, and the wrapped key. A 16 byte fixed length protocol header is transmitted first, which contains a binary string, representing the payload's length in bytes. The receiver than accepts a buffer of that size, and goes about the decryption process. The chat server doesn't limit the total size of packets, however both the reverse shell and FTP will transmit in chunks behind the scenes if the ciphertext exceeds a certain length.
 
 For more information on VPP, see: [vpp](#vpp)
 
@@ -311,7 +322,8 @@ Optional args:
 - `--certificate` | `-crt`: Optional export path for the signed x509 
 certificate. 
 
-Default export path: `-crt ./cert.crt`
+Default export path: 
+- `-crt ./cert.crt`
 
 ```bash
 # Long form:
@@ -369,4 +381,19 @@ python vp.py -pki ca
 
 ---
 
+## Database Operations
+
+VP is backed by a SQLite3 database, which will be generated at runtime if not found by the program. VPP requires that remote client's RSA public keys be added to the runtime SQL database. Beyond simply using the public keys for hybrid encryption, VPP uses the keys for authentication.
+
+1) [user](#user)
+2) [target](#target)
+3) [add-key](#add-key)
+4) [show-key](#show-key)
+5) [show-keys](#show-keys)
+6) [delete-key](#delete-key)
+7) [add-target](#add-target)
+8) [show-target](#show-target)
+9) [show-targets](#show-targets)
+10) [delete-target](#delete-target)
+11) [show-tables](#show-tables)
 
