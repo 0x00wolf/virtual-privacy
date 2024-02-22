@@ -1,6 +1,6 @@
 # Virtual-Privacy
 
-Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert communications over insecure networks. Featuring four levels of encryption, 24 host iterations (command and control, file transfers, and a chatroom), a number of options for generating credentials, and additonally the ability to encrypt a file, directory, or an entire path recursively with a single command. VP employs elements of SSH, PGP, and PKI to maintain confidentiality, integrity, and authenticity for network communications.
+Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert communications over insecure networks. VP features 4 levels of encryption, 24 host iterations (command and control, file transfers, and a chatroom), and a number of options for generating credentials. VP additonally offers the ability to encrypt a file, directory, or an entire path recursively with optional RSA signature verification for CIA for data at rest, or in transit. VP features a unique network security protocol that emulates elements of other widely addopted security protocols like SSH, PGP, and SSL.
 
 It should be noted, that although the Chatroom operations are styled after AOL chat rooms circa 1999, they can be layered with encryption to be a suitable communication medium for individuals working in contemporary spycraft.
 
@@ -14,10 +14,10 @@ You will find a comprehensive manual that will teach you how to use all of the e
 ## Index:
 
 1) [Installation](#installation)
-2) [VP Encryption Options](#vp_encryption_options)
-3) [Generate Credentials]
-4) [Generating Credentials](#generating-credentials)
-5) [Host Operations](#host_operations)
+2) [Host Operations](#host_options)
+3) [VP Encryption Options](#vp_encryption_options)
+4) [Generate Credentials](#generating-credentials)
+5) [Database Operations](#database_operations)
 6) [Encryption & Decryption](#encryption_&_decryption_options)
 
 
@@ -56,12 +56,61 @@ pip install pycryptodome
 
 ---
 
+
+## **Host Operations**
+
+Both client and server operating modes feature 12 iterations on 3 host 
+archetypes: Command & Control (c2), File Transfers (FTP), & Chatroom (chat).
+
+Each operating mode has 4 variations, relative to the different encryption 
+levels VP offers. The user simply needs to supply the required credentials 
+for the desired operating mode, and VP will select the correct host at 
+runtime. For more information on VP's encryption options, see: 
+[VP Encryption Options](#vp-encryption-options). 
+
+1) [c2](#c2)
+2) [ftp](#ftp)
+3) [chat](#chat)
+
+---
+
+### **c2**
+
+VP's Command & Control mode sends a Pythonic reverse shell from the client 
+to the server. `subprocess.Popen['python', '-i', ,'import pty', 'pty.spawn('/bin/bash')]` The client runs 
+the shell in a subprocess and uses Pipes to funnel the stdin, stdout & 
+stderr over the network connection, allowing VP to encrypt the data streams 
+in the process. VP uses multithreading, pipes, and queues to create a 
+smooth reverse shell experience, while encrypting data in transit.  
+
+---
+
+### ftp
+
+VP's ftp transfers allow for secure data transfer. Alternatively, you can 
+use VP's file encryption to encrypt a file in advance of transfer so that 
+only the intended recipient will be able to decrypt it. Pairing file 
+encryption with secure data transmission makes for a very high degree of 
+security.
+
+---
+
+### Chat
+
+VP's Chat is styled after an AOL chatroom from 1999, but with heavy layers of modern encryption. After a client connects, the server will decrypt messages from each client, and then broadcast them to every connected client, encrypting each with their respective credentials (depending on the encryption level in use). The chatroom uses multithreading, and is conceieably capable of handling hundreds if not thousands of concurrent hosts, although that isn't very secretive. 
+
+The Chatroom was the initial inspiration for this project. I thought it would be funny to create an AOL chatroom that would be suitable for high level threat actors. A lot of my projects begin this way. I had a silly idea that I started to build, and then realized cool things I could make it do.
+
+---
+
+
 ## VP Encryption Options
 
 1) [Base64](#base64)
 2) [SSL](#ssl)
 3) [VPP](#vpp)
-4) [SSL & VPP](#vpp__ssl)
+4) [SSL and VPP](#vpp_and_ssl)
+
 ---
 
 ## Base64
@@ -101,14 +150,13 @@ for producing the required credentials. Fast-gen, in particular, will
 immediately spit out everything you need.
 
 
-Server args:
+**Server args:**
 - `--private-key` | `-pr`: The RSA private key used to either self-sign the x509 certificate, or create the certificate signing request signed by a root CA.
 - `--certificate` | `-crt`: The signed x509 certificate
 - `--only-ssl` | `-os`: VPP & SSL have the same requirements for credentials, so this argument is necessary to inform VP to only use SSL. 
 
-Client args:
+**Client args:**
 - `--certificate` | `crt`: Either the root CA signed certificate, or a server self-signed certificate.
-
 
 **Level 2: SSL examples**
 
@@ -125,7 +173,6 @@ python vp.py --client c2 --host 192.168.2.15 --port 1337 --certificate ./cert.cr
 # Client-side short form:
 python vp.py -c c2 -ip 192.168.2.15 -p 1337 -crt ./cert.crt
 ```
-
 
 ---
 
@@ -144,15 +191,21 @@ client has to provide the server's RSA public key as a runtime argument.
 For detailed information on generating an RSA keypair, see [Generate 
 Credentials](#generate-credentials).
 
-
-**Level 3: VPP**
-
 To add Client RSA public keys to the runtime SQL database, see: 
 
 For more information on VPP, see: [vpp](#vpp)
 
 To generate credentials for VPP, see: [rsa](#rsa)
 
+**Server args:**
+- `--private-key` | `-pr`: The server's RSA private key
+- Clients added to the runtime SQL database: [add-key](#add_key)
+
+**Client args:**
+- `--private-key` | `-pr`: The client's RSA private key.
+- `--public-key` | `-pu`: The server's RSA public key.
+
+**Level 3: VPP Examples**
 
 ```bash
 # Server-side long form:
@@ -174,8 +227,12 @@ python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pu
 
 VPP wrapped in TLSv1.3 for obfuscation and robust security. 
 
-**Level 4: VPP & SSL**
+**Server args:**
+- `--private-key` | `-pr`: The path to the server's RSA private key
+- `--certificate` | `-crt`: The path to the server's signed x509 certificate.
+- Client's RSA private keys added the runtime SQL database, see: [add-key](#add_key)
 
+**Level 4: VPP & SSL Examples**
 
 ```bash
 # Server-side long form:
@@ -314,41 +371,5 @@ python vp.py -pki ca
 ```
 
 ---
-
-## **Client & Server Operations**
-
-Both client and server operating modes feature 12 iterations on 3 host 
-archetypes: Command & Control (c2), File Transfers (FTP), & Chatroom (chat).
-
-Each operating mode has 4 variations, relative to the different encryption 
-levels VP offers. The user simply needs to supply the required credentials 
-for the desired operating mode, and VP will select the correct host at 
-runtime. For more information on VP's encryption options, see: 
-[VP Encryption Options](#vp-encryption-options). 
-
-1) [c2](#c2)
-2) [ftp](#ftp)
-3) [chat](#chat)
-
----
-
-### **c2**
-
-VP's Command & Control mode sends a Pythonic reverse shell from the client 
-to the server. `['import pty'; 'pty.spawn('/bin/bash')]` The client runs 
-the shell in a subprocess and uses Pipes to funnel the stdin, stdout & 
-stderr over the network connection, allowing VP to encrypt the data streams 
-in the process. VP uses multithreading, pipes, and queues to create a 
-smooth reverse shell experience, while encrypting data in transit.  
-
----
-
-### ftp
-
-VP's ftp transfers allow for secure data transfer. Alternatively, you can 
-use VP's file encryption to encrypt a file in advance of transfer so that 
-only the intended recipient will be able to decrypt it. Pairing file 
-encryption with secure data transmission makes for a very high degree of 
-security.
 
 
