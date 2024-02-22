@@ -73,14 +73,17 @@ runtime. For more information on VP's encryption options, see:
 [VP Encryption Options](#vp-encryption-options). 
 
 Required Args:
+
 - Mode: `--client OPERATION` | `-c OPERATION` or `--server OPERATION` | `-s OPERATION`
 
 Operations:
+
 - `c2`: See [c2](#c2)
 - `ftp`: See [ftp](#ftp)
 - `chat`: See [chat](#chat)
 
 Optional Sever Args:
+
 - `--host` | `-ip`: Hostname or IPv4 address. Defaults to loopback for testing, `127.0.0.1`.
 - `--port` | `-p`: Port number. Defaults to 1337.
 - `--only-ssl` | `-os`: Required for the server to use SSL without VPP. See: [Levels of Encryption](#levels-of-encryption)
@@ -89,6 +92,7 @@ Optional Sever Args:
 - `--certificate` | `-crt`: Path to the server's signed x509 certificate.
 
 Optional Client Args:
+
 - `--host` | `-ip`: Hostname or IPv4 address. Defaults to loopback for testing, `127.0.0.1`.
 - `--port` | `-p`: Port number. Defaults to 1337.
 - `--only-ssl` | `-os`: Required for the server to use SSL without VPP. See: [Levels of Encryption](#levels-of-encryption)
@@ -99,6 +103,7 @@ Optional Client Args:
 - `--target` | `-t`: Sets the saved parameters for `target` server nickname.
 
 Basic Usage:
+
 ```bash
 # Long form:
 python vp.py --server OPERATION
@@ -175,6 +180,7 @@ actors while acquiring a foothold on a new network.
 **Leve 1: Base64 examples**
 
 Server-side:
+
 ```bash
 # Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337
@@ -185,6 +191,7 @@ python vp.py -s c2 -ip 0.0.0.0 -p 1337
 
 
 Client-side:
+
 ```bash
 # Client-side long form:
 python vp.py --client c2 --host 192.168.2.15 --port 1337
@@ -210,16 +217,19 @@ immediately spit out everything you need.
 
 
 **Server args:**
+
 - `--private-key` | `-pr`: The RSA private key used to either self-sign the x509 certificate, or create the certificate signing request signed by a root CA.
 - `--certificate` | `-crt`: The signed x509 certificate
 - `--only-ssl` | `-os`: VPP & SSL have the same requirements for credentials, so this argument is necessary to inform VP to only use SSL. 
 
 **Client args:**
+
 - `--certificate` | `crt`: Either the root CA signed certificate, or a server self-signed certificate.
 
 **Level 2: SSL examples**
 
 Server-side:
+
 ```bash
 # Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./key.pem --certificate ./cert.crt --only-ssl
@@ -229,6 +239,7 @@ python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./key.pem -crt ./cert. -os
 ```
 
 Client-side:
+
 ```bash
 # Client-side short form:
 python vp.py --client c2 --host 192.168.2.15 --port 1337 --certificate ./cert.crt
@@ -273,16 +284,19 @@ For more information on VPP, see: [vpp](#vpp)
 To generate credentials for VPP, see: [rsa](#rsa)
 
 **Server args:**
+
 - `--private-key` | `-pr`: The server's RSA private key
 - Clients added to the runtime SQL database: [add-key](#add_key)
 
 **Client args:**
+
 - `--private-key` | `-pr`: The client's RSA private key.
 - `--public-key` | `-pu`: The server's RSA public key.
 
 **Level 3: VPP Examples**
 
 Server-side:
+
 ```bash
 # Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./server_privkey.pem
@@ -292,6 +306,7 @@ python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./server_privkey.pem
 ```
 
 Client-side:
+
 ```bash
 # Client-side short form:
 python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./my_privkey.pem --public-key ./server_pubkey.pem
@@ -309,6 +324,7 @@ python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pu
 VPP wrapped in TLSv1.3 for obfuscation and robust security. 
 
 **Server args:**
+
 - `--private-key` | `-pr`: The path to the server's RSA private key
 - `--certificate` | `-crt`: The path to the server's signed x509 certificate.
 - The RSA public keys of remote clients added to the runtime SQL database, see: [add-key](#add_key)
@@ -316,6 +332,7 @@ VPP wrapped in TLSv1.3 for obfuscation and robust security.
 **Level 4: VPP & SSL Examples**
 
 Server-side:
+
 ```bash
 # Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./keys/local/srvr_privkey.pem --certificate ./cert.crt
@@ -325,6 +342,7 @@ python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./keys/local/srvr_privkey.pem -crt ./
 ```
 
 Client-side:
+
 ```bash
 # Client-side short form:
 python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./keys/local/my_privkey.pem --public-key ./keys/remote/srvr_pubkey.pem --certificate ./cert.crt
@@ -376,10 +394,12 @@ Note: Both optional arguments must be supplied for the program to accept
 them.
 
 Optional Args:
+
 `--private-key` | `-pr`: Supply the export path for the private key in advance
 `--public-key` | `-pu`: Suppy the export path for the public key in advance.
 
 ```bash
+
 # Long form:
 python vp.py --generate-pki rsa
 
@@ -402,13 +422,16 @@ This operation takes a preexisting RSA private key and uses it to produce a
 self-signed x509 certificate for establishing SSL. 
 
 Args:
+
 - `--private-key` | `-pr`: Path to an RSA private key
 
 Optional args:
+
 - `--certificate` | `-crt`: Optional export path for the signed x509 
 certificate. 
 
 Default export path: 
+
 - `-crt ./cert.crt`
 
 ```bash
@@ -435,10 +458,12 @@ establishing a SSL encrypted connection, a new RSA private key and signed
 x509 certificate.
 
 Optional args:
+
 - `--private-key` | `-pr`: The export path for the RSA private key.
 - `--certificate` | `-crt`: The export path for the signed certificate.
 
 Defaults:
+
 - `-pr ./key.pem -crt ./cert.crt`
 
 ```bash
@@ -499,19 +524,21 @@ VP features the ability to encrypt or decrypt files, a single directory non-recu
 VP's file encryption option is useful for remote data transfer. The encryption process is very similar to the VP protocol, with the exception that the wrapped key (and optional RSA signature) are prepended to the file. During [Decryption](#Decryption) they are sliced off and used in the same sequence as described in [VPP](#VPP). 
 
 Encryption Required Args:
-`--file-in` | `-fi`: The file to be encrypted.
-`--public-key` | `-pu`: The RSA public key of the individual who will decrypt the file.
+
+- `--file-in` | `-fi`: The file to be encrypted.
+- `--public-key` | `-pu`: The RSA public key of the individual who will decrypt the file.
 
 Decryption required args:
-`--file-in` | `-fi`: The file to be decrypted.
-`--private-key` | `-pr`: The matching RSA private key to the public key used for encryption. Used to decrypt the files with VPP.
+- `--file-in` | `-fi`: The file to be decrypted.
+- `--private-key` | `-pr`: The matching RSA private key to the public key used for encryption. Used to decrypt the files with VPP.
 
 Optional args:
-`--file-out` | `-fo`: An optional export path. Note that by using a non-default path, the original unencrypted file will remain in it's original location after encryption.
-`--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
-`--public-key` | `-pu`: The RSA public key to verify the signature, if necessary. If signature verification was used, decryption will failwithout the provided public key, unless you change the code for `crypter.decrypt.signed_file()`.
+- `--file-out` | `-fo`: An optional export path. Note that by using a non-default path, the original unencrypted file will remain in it's original location after encryption.
+- `--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
+- `--public-key` | `-pu`: The RSA public key to verify the signature, if necessary. If signature verification was used, decryption will failwithout the provided public key, unless you change the code for `crypter.decrypt.signed_file()`.
 
 Encryption examples:
+
 ```bash
 # Encryption long form:
 python vp.py --encrypt file --public-key ./keys/remote/Bobcat_public.pem --file-in ./secretmessage.txt
@@ -524,6 +551,7 @@ python vp.py -e f -pu ./keys/remote/Bobcat_public.pem -pr ./keys/local/my_privke
 ```
 
 Decryption examples:
+
 ```bash
 # Decrypt long form:
 python vp.py --decrypt file --private-key ./keys/local/my_privkey.pem -fi ./path/to/secret4bobcat.enc
@@ -547,13 +575,16 @@ Encrypt a directory, without encrypting files found in any subdirectories. Optio
 
 
 Required Args:
-`--file-in` | `-fi`: The path to the directory that will be encrypted.
-`--public-key` | `-pu`: The RSA public key of the individual who will decrypt the directory.
+
+- `--file-in` | `-fi`: The path to the directory that will be encrypted.
+- `--public-key` | `-pu`: The RSA public key of the individual who will decrypt the directory.
 
 Optional args:
-`--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
+
+- `--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
 
 Encryption examples:
+
 ```bash
 # Long form:
 python vp.py --encrypt dir --public-key ./keys/local/my_pubkey.pem --file-in /path/to/secrets_directory
@@ -563,6 +594,7 @@ python vp.py -e d -pu ./keys/local/my_pubkey.pem -fi ./path/to/secrets_directory
 ```
 
 Decryption examples:
+
 ```bash
 # Decrypt long form:
 python vp.py --decrypt dir --private-key ./keys/local/my_privkey.pem -fi ./path/to/encrypted_dir
@@ -583,13 +615,16 @@ Encrypt a path, recursively encrypting files found in any subdirectories. Option
 
 
 Required Args:
-`--file-in` | `-fi`: The path that will be encrypted.
-`--public-key` | `-pu`: The RSA public key belonging to the individual who will decrypt the path.
+
+- `--file-in` | `-fi`: The path that will be encrypted.
+- `--public-key` | `-pu`: The RSA public key belonging to the individual who will decrypt the path.
 
 Optional args:
-`--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
+
+- `--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
 
 Encryption examples:
+
 ```bash
 # Encrypt long form:
 python vp.py --encrypt path --public-key ./keys/local/my_pubkey.pem --file-in /path/to/secrets_path
@@ -599,6 +634,7 @@ python vp.py -e p -pu ./keys/local/my_pubkey.pem -fi ./path/to/secrets_path
 ```
 
 Decryption examples:
+
 ```bash
 # Decrypt long form:
 python vp.py --decrypt path --private-key ./keys/local/my_privkey.pem -fi ./path/to/encrypted_path
@@ -642,6 +678,7 @@ Set the SQL database name key at runtime to initialize a new database, or refere
 Saves the database to the data directory, found within VP's parent folder.
 
 Example:
+
 ```bash
 # Long form:
 python vp.py --database --user Jedi
@@ -668,9 +705,11 @@ This runtime argument, like `--user`, can be used with multiple operating modes.
 Add a remote client's RSA public key to the runtime SQL database.
 
 Required Args:
+
 - `--public-key` | `-pr`: The remote user's RSA public key.
 
 Optional Args:
+
 - `--target` | `-t`: Set a nickname for the public key.
 
 Example:
@@ -694,6 +733,7 @@ python vp.py -db ak -pu ./keys/remote/bobcats_pubkey.pem -t Bobcat
 Show a saved public key by ID or nickname.
 
 Args:
+
 - `--target` | `-t`: The target nickname or ID number (shown at creation if no nickname is supplied).
 
 Example:
@@ -733,6 +773,7 @@ python vp.py -db show-keys
 `delete-key`
 
 Args:
+
 - `--target` | `-t`: The target nickname or ID number (shown at creation if no nickname is supplied).
 
 Example:
@@ -756,11 +797,13 @@ python vp.py -db sk -t Jedi
 Save connection information for a remote server in the SQL database. Use the `--target` option at runtime to initiailize the variables.
 
 Args: 
+
 - `--target` | `-t`: Server's nickname.
 - `--host` | `-ip`: The hostname or IPv4 address.
 - `--port` | `-p`: The port.
 
 Optional Args:
+
 - `--public-key` | `-pu`: The path to the server's public key. 
 - `--certificate` | `-crt`: The path to the server's signed x509 certificate.
 
@@ -782,7 +825,9 @@ python vp.py -db as -t Jedi -ip www.jedibuddy.com -p 1337 -pu ./keys/remote/jedi
 
 `show-server` | `ss`
 
- - Requires: `--target` | `-t`:  The target nickname.
+Required Args: 
+
+- `--target` | `-t`:  The target nickname.
 
 Example:
 
@@ -805,6 +850,7 @@ python vp.py -db ss -t Bobcat
 Deletes a target server based on a supplied `--target` nickname.
 
 Args:
+
 - `--target` | `-t`: The target nickname.
 
 Example:
