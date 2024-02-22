@@ -21,7 +21,7 @@ You will find a comprehensive manual that will teach you how to use all of the e
 3) [Levels of Encryption](#levels-of-encryption)
 4) [Generate Credentials](#generate-credentials)
 5) [Database Operations](#database-operations)
-6) [Encryption & Decryption](#encryption_&_decryption_options)
+6) [Encryption & Decryption](#encryption_and_decryption)
 
 
 ---
