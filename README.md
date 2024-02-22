@@ -300,7 +300,7 @@ VPP wrapped in TLSv1.3 for obfuscation and robust security.
 **Server args:**
 - `--private-key` | `-pr`: The path to the server's RSA private key
 - `--certificate` | `-crt`: The path to the server's signed x509 certificate.
-- Client's RSA private keys added the runtime SQL database, see: [add-key](#add_key)
+- The RSA public keys of remote clients added to the runtime SQL database, see: [add-key](#add_key)
 
 **Level 4: VPP & SSL Examples**
 
