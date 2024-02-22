@@ -464,11 +464,12 @@ python vp.py -pki ca
 
 ## Encryption and Decryption
 
-`--encrypt [OPERATION]` | `-e [OPERATION]` & `--decrypt [OPERATION]` | `-d [OPERATION]`
+`--encrypt [OPERATION]` | `-e [OPERATION]` 
+& `--decrypt [OPERATION]` | `-d [OPERATION]`
 
 VP features the ability to encrypt or decrypt files, a single directory non-recursively, or a path recursively. You can also add signature authentication into the encryption process. You can additonally sign files as you encrypt them, allowing for additional layers of encryption and authenticity for files hosted with VP's `--server ftp` host operation.
 
-1) [encrypt](#file)
+1) [file](#file)
 2) [dir](#dir)
 3) [path](#path)
 
