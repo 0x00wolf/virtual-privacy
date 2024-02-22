@@ -77,6 +77,11 @@ runtime. For more information on VP's encryption options, see:
 Required Args:
 - Mode: `--client OPERATION` | `-c OPERATION` or `--server OPERATION` | `-s OPERATION`
 
+Operations:
+- `c2`: See [c2](#c2)
+- `ftp`: See [ftp](#ftp)
+- `chat`: See [chat](#chat)
+
 Optional Sever Args:
 - `--host` | `-ip`: Hostname or IPv4 address. Defaults to loopback for testing, `127.0.0.1`.
 - `--port` | `-p`: Port number. Defaults to 1337.
@@ -94,11 +99,6 @@ Optional Client Args:
 - `--public-key` | `-pu`: Path to the remote server's RSA public key. 
 - `--certificate`: Path to the server's signed x509 certificate.
 - `--target` | `-t`: Sets the saved parameters for `target` server nickname.
-
-Operations:
-- `c2`: See [c2](#c2)
-- `ftp`: See [ftp](#ftp)
-- `chat`: See [chat](#chat)
 
 Basic Usage:
 ```bash
