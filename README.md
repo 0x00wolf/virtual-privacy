@@ -220,7 +220,7 @@ python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pu
 
 ---
 
-## VPP & SSL
+## SSL and VPP
 
 VPP wrapped in TLSv1.3 for obfuscation and robust security. 
 
