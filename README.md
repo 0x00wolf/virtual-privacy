@@ -115,7 +115,9 @@ stderr over the network connection, allowing VP to encrypt the data streams
 in the process. VP uses multithreading, pipes, and queues to create a 
 smooth reverse shell experience, while encrypting data in transit.  
 
+
 ---
+
 
 ### ftp
 
@@ -127,7 +129,9 @@ only the intended recipient will be able to decrypt it. Pairing file
 encryption with secure data transmission makes for a very high degree of 
 security.
 
+
 ---
+
 
 ### chat
 
@@ -139,6 +143,7 @@ After a client connects, the server will decrypt messages from each client, and 
 
 The Chatroom was the initial inspiration for this project. I thought it would be funny to create an AOL chatroom that would be suitable for high level threat actors. A lot of my projects begin this way. I had a silly idea that I started to build, and then realized cool things I could make it do.
 
+
 ---
 
 
@@ -149,7 +154,9 @@ The Chatroom was the initial inspiration for this project. I thought it would be
 3) [VPP](#vpp)
 4) [SSL and VPP](#vpp_and_ssl)
 
+
 ---
+
 
 ## Base64
 
@@ -175,6 +182,7 @@ python vp.py -c c2 -ip 192.168.2.15 -p 1337
 ```
 
 ---
+
 
 ### SSL
 
@@ -213,7 +221,9 @@ python vp.py --client c2 --host 192.168.2.15 --port 1337 --certificate ./cert.cr
 python vp.py -c c2 -ip 192.168.2.15 -p 1337 -crt ./cert.crt
 ```
 
+
 ---
+
 
 ## VPP
 
@@ -270,7 +280,9 @@ python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./my_priv
 python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pubkey.pem
 ```
 
+
 ---
+
 
 ## SSL and VPP
 
@@ -296,6 +308,7 @@ python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./keys/lo
 # Client-side short form:
 python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./keys/local/my_privkey.pem -pu ./keys/remote/srvr_pubkey.pem -crt ./cert.crt
 ```
+
 
 ---
 
@@ -324,7 +337,9 @@ Certificate Authority.
 3) [fast-gen](#fast-gen)
 4) [root-ca](#root-ca)
 
+
 ---
+
 
 ### rsa
 
@@ -351,7 +366,9 @@ python vp.py -pki rsa
 python vp.py -pki rsa --private-key ./keys/local/my_privkey.pem --public-key  ./keys/local/my_pubkey.pem
 ```
 
+
 ---
+
 
 ### self-sign
 
@@ -407,7 +424,9 @@ python vp.py -pki fg
 
 ```
 
+
 ---
+
 
 ### **root-ca**
 
@@ -428,13 +447,18 @@ python vp.py --generate-pki root-ca
 python vp.py -pki ca
 ```
 
+
 ---
+
 
 ## Encryption and Decryption
 
 VP features the ability to encrypt or decrypt files, a single directory non-recursively, or a path recursively. You can also add signature authentication into the encryption process. You can then use 
 
 It was incredibly easy to add these features in, thanks the the crypter module included with VP. The crypter features lots of documentation, and I tried my best to develop it following best practices from Google's Python Style Guide, including docstrings etc.
+
+
+---
 
 
 ## Database Operations
@@ -455,7 +479,9 @@ VP is backed by a SQLite3 database, which will be generated at runtime if not fo
 10) [delete-target](#delete-target)
 11) [show-tables](#show-tables)
 
+
 ---
+
 
 ### add-key
 
@@ -479,7 +505,9 @@ python vp.py --database add-key --public-key ./keys/remote/bobcats_pubkey.pem --
 python vp.py -db ak -pu ./keys/remote/bobcats_pubkey.pem -t Bobcat
 ```
 
+
 ---
+
 
 ### show-key
 
@@ -500,7 +528,9 @@ python vp.py --database show-key --target Jedi
 python vp.py -db sk -t Bobcat
 ```
 
+
 ---
+
 
 ### show-keys
 
@@ -516,7 +546,9 @@ python vp.py --database show-keys
 python vp.py -db show-keys
 ```
 
+
 ---
+
 
 ### delete-key
 
@@ -535,7 +567,9 @@ python vp.py --database delete-key --target Bobcat
 python vp.py -db sk -t Jedi
 ```
 
+
 ---
+
 
 ### add-server
 
@@ -562,7 +596,9 @@ python vp.py --database add-server --target Jedi --host www.jedibuddy.com --port
 python vp.py -db as -t Jedi -ip www.jedibuddy.com -p 1337 -pu ./keys/remote/jedi_public.pem -crt ./keys/remote/jedi_cert.crt
 ```
 
+
 ---
+
 
 ### show-server
 
@@ -580,7 +616,9 @@ python vp.py --database show-server --target Bobcat
 python vp.py -db ss -t Bobcat
 ```
 
+
 ---
+
 
 ### delete-server
 
@@ -601,7 +639,9 @@ python vp.py --database delete-key --target Bobcat
 python vp.py -db sk -t Jedi
 ```
 
+
 ---
+
 
 ### show-servers
 
@@ -617,6 +657,8 @@ python vp.py --database show-servers
 python vp.py -db show-servers
 ```
 
+
+---
 
 
 ### user
