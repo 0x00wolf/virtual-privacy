@@ -4,6 +4,8 @@ Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert commun
 
 It should be noted, the host operation, chat, is styled after AOL chat rooms circa 1999, but with the added feature of layered encryption to create a communication medium suitable for individuals working in contemporary spycraft.
 
+---
+
 ## In this README.md:
 
 You will find a comprehensive manual that will teach you how to use all of the easy features that the program offers to conduct covert communications, and encryted data storage!
@@ -15,7 +17,7 @@ You will find a comprehensive manual that will teach you how to use all of the e
 
 1) [Installation](#installation)
 2) [Host Operations](#host-operations)
-3) [VP Encryption Options](#vp-encryption-options)
+3) [VP Encryption Levels](#vp-encryption-levels)
 4) [Generate Credentials](#generate-credentials)
 5) [Database Operations](#database_operations)
 6) [Encryption & Decryption](#encryption_&_decryption_options)
@@ -134,7 +136,7 @@ The Chatroom was the initial inspiration for this project. I thought it would be
 ---
 
 
-## VP Encryption Options
+## VP Encryption Levels
 
 1) [Base64](#base64)
 2) [SSL](#ssl)
