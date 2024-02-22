@@ -453,12 +453,100 @@ python vp.py -pki ca
 
 ## Encryption and Decryption
 
-VP features the ability to encrypt or decrypt files, a single directory non-recursively, or a path recursively. You can also add signature authentication into the encryption process. You can then use 
+`--encrypt [OPERATION]` | `-e [OPERATION]` & `--decrypt [OPERATION]` | `-d [OPERATION]`
 
-It was incredibly easy to add these features in, thanks the the crypter module included with VP. The crypter features lots of documentation, and I tried my best to develop it following best practices from Google's Python Style Guide, including docstrings etc.
+VP features the ability to encrypt or decrypt files, a single directory non-recursively, or a path recursively. You can also add signature authentication into the encryption process. You can additonally sign files as you encrypt them, allowing for additional layers of encryption and authenticity for files hosted with VP's `--server ftp` host operation.
+
+1) [encrypt](#file)
+2) [dir](#dir)
+3) [path](#path)
+
+---
+
+### file
+
+`file`
+
+VP's file encryption option is useful for remote data transfer. The encryption process is very similar to the VP protocol, with the exception that the wrapped key (and optional RSA signature) are prepended to the file. During [Decryption](#Decryption) they are sliced off and used in the same sequence as described in [VPP](#VPP). 
+
+Encryption Required Args:
+`--file-in` | `-fi`: The file to be encrypted.
+`--public-key` | `-pu`: The RSA public key of the individual who will decrypt the file.
+
+Decryption required args:
+`--file-in` | `-fi`: The file to be decrypted.
+`--private-key` | `-pr`: The matching RSA private key to the public key used for encryption. Used to decrypt the files with VPP.
+
+Optional args:
+`--file-out` | `-fo`: An optional export path. Note that by using a non-default path, the original unencrypted file will remain in it's original location after encryption.
+`--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
+`--public-key` | `-pu`: The RSA public key to verify the signature, if necessary. If signature verification was used, decryption will failwithout the provided public key, unless you change the code for `crypter.decrypt.signed_file()`.
+
+Examples:
+```bash
+# Encryption long form:
+python vp.py --encrypt file --public-key ./keys/remote/Bobcat_public.pem --file-in ./secretmessage.txt
+
+# Short form:
+python vp.py -e f -pu ./keys/remote/Bobcat_public.pem -fi ./secretmessage.txt
+
+# Short form with optional file out and signature authentication:
+python vp.py -e f -pu ./keys/remote/Bobcat_public.pem -pr ./keys/local/my_privkey.pem -fi ./secretmessage.txt -fo ./secret4bobcat.enc
+```
 
 
 ---
+
+
+### dir
+
+`dir`
+
+Encrypt a directory, without encrypting files found in any subdirectories. Optional RSA signature authentcation is available, but simply due to the fact the same function works behind the scenes to encrypt data. Logically, this operation is a tool for secure local data storage, alongwith the following operation, `path`. Note that any file within an encrypted directory or path can be unencrypted with the `--decrypt file` operation ([decrypt file](#decrypt-file)).
+
+
+Required Args:
+`--file-in` | `-fi`: The path to the directory that will be encrypted.
+`--public-key` | `-pu`: The RSA public key of the individual who will decrypt the directory.
+
+Optional args:
+`--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
+
+Examples:
+```bash
+# Long form:
+python vp.py --encrypt dir --public-key ./keys/local/my_pubkey.pem --file-in /path/to/secrets_directory
+
+# Short form:
+python vp.py -e d -pu ./keys/local/my_pubkey.pem -fi ./path/to/secrets_directory
+```
+
+
+---
+
+
+### path
+
+`dir`
+
+Encrypt a directory, without encrypting files found in any subdirectories. Optional RSA signature authentcation is available, but simply due to the fact the same function works behind the scenes to encrypt data. Logically, this operation is a tool for secure local data storage, alongwith the following operation, `path`. Note that any file within an encrypted directory or path can be unencrypted with the `--decrypt file` operation ([decrypt file](#decrypt-file)).
+
+
+Required Args:
+`--file-in` | `-fi`: The path to the directory that will be encrypted.
+`--public-key` | `-pu`: The RSA public key of the individual who will decrypt the directory.
+
+Optional args:
+`--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
+
+Examples:
+```bash
+# Long form:
+python vp.py --encrypt dir --public-key ./keys/local/my_pubkey.pem --file-in /path/to/secrets_directory
+
+# Short form:
+python vp.py -e d -pu ./keys/local/my_pubkey.pem -fi ./path/to/secrets_directory
+```
 
 
 ## Database Operations
@@ -481,6 +569,31 @@ VP is backed by a SQLite3 database, which will be generated at runtime if not fo
 
 
 ---
+
+
+### user
+
+`--user` | `-u`
+
+Set the SQL database name key at runtime to initialize a new database, or reference a pre-existing database. The `--user` argument can be used with the server and client mode to reference a particular databse. The primary use case here is if you want to establish different runtime databases to limit external clients whose public keys you have added from connecting to a specific server instance. 
+
+Saves the database to the data directory, found within VP's parent folder.
+
+Example:
+```bash
+# Long form:
+python vp.py --database --user Jedi
+```
+
+
+---
+
+
+### target
+
+`--target` | `-t`
+
+This runtime argument, like `--user`, can be used with multiple operating modes. For database operations it will be utilized to set nicknames when saving RSA public keys (optional) or the information to connect to remote servers (required).
 
 
 ### add-key
@@ -660,18 +773,3 @@ python vp.py -db show-servers
 
 ---
 
-
-### user
-
-`--user` | `-u`
-
-Set the name key to initialize a new SQL database, or reference a pre-existing database. 
-
-Exports to the data directory, found within VP's parent folder.
-
-Example:
-```bash
-# Long form:
-python vp.py --database --user Jedi
-```
----
