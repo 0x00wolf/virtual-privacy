@@ -13,6 +13,7 @@ You will find a comprehensive manual that will teach you how to use all of the e
 
 ---
 
+
 ## Index:
 
 1) [Installation](#installation)
@@ -398,7 +399,9 @@ python vp.py -pki ss -pr ./local/srvr_privkey.pem
 python vp.py -pki ss -pr ./keys/local/srvr_privkey.pem --certificate ./keys/local/srvr_cert.crt
 ```
 
+
 ---
+
 
 ### **fast-gen**
 
@@ -461,7 +464,9 @@ VP features the ability to encrypt or decrypt files, a single directory non-recu
 2) [dir](#dir)
 3) [path](#path)
 
+
 ---
+
 
 ### file
 
@@ -482,16 +487,28 @@ Optional args:
 `--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
 `--public-key` | `-pu`: The RSA public key to verify the signature, if necessary. If signature verification was used, decryption will failwithout the provided public key, unless you change the code for `crypter.decrypt.signed_file()`.
 
-Examples:
+Encryption examples:
 ```bash
 # Encryption long form:
 python vp.py --encrypt file --public-key ./keys/remote/Bobcat_public.pem --file-in ./secretmessage.txt
 
-# Short form:
+# Encryption short form:
 python vp.py -e f -pu ./keys/remote/Bobcat_public.pem -fi ./secretmessage.txt
 
-# Short form with optional file out and signature authentication:
+# Encryption short form with optional file out and signature authentication:
 python vp.py -e f -pu ./keys/remote/Bobcat_public.pem -pr ./keys/local/my_privkey.pem -fi ./secretmessage.txt -fo ./secret4bobcat.enc
+```
+
+Decryption examples:
+```bash
+# Decrypt long form:
+python vp.py --decrypt file --private-key ./keys/local/my_privkey.pem -fi ./path/to/secret4bobcat.enc
+
+# Decrypt short form:
+python vp.py -d f -pr ./keys/local/my_privkey.pem -fi ./path/to/secret4bobcat.enc
+
+# Decrypt short form with optional RSA signature verification and a non default export path:
+python vp.py -d f -pr ./keys/local/my_privkey.pem -fi ./path/to/secret4bobcat.enc -pu ./keys/remote/jedi_public.pem -fo ./unencryptedsecret4me.txt
 ```
 
 
@@ -502,7 +519,7 @@ python vp.py -e f -pu ./keys/remote/Bobcat_public.pem -pr ./keys/local/my_privke
 
 `dir`
 
-Encrypt a directory, without encrypting files found in any subdirectories. Optional RSA signature authentcation is available, but simply due to the fact the same function works behind the scenes to encrypt data. Logically, this operation is a tool for secure local data storage, alongwith the following operation, `path`. Note that any file within an encrypted directory or path can be unencrypted with the `--decrypt file` operation ([decrypt file](#decrypt-file)).
+Encrypt a directory, without encrypting files found in any subdirectories. Optional RSA signature authentcation is available, but simply due to the fact the same function works behind the scenes to encrypt data. Logically, this operation is a tool for local secure data storage, along with the `path` operation, and not particularly useful for network file transfers more so than any other operation modes. Note that any file within an encrypted directory or path can be unencrypted with the `--decrypt file` operation ([decrypt file](#decrypt-file)).
 
 
 Required Args:
@@ -512,7 +529,7 @@ Required Args:
 Optional args:
 `--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
 
-Examples:
+Encryption examples:
 ```bash
 # Long form:
 python vp.py --encrypt dir --public-key ./keys/local/my_pubkey.pem --file-in /path/to/secrets_directory
@@ -521,31 +538,49 @@ python vp.py --encrypt dir --public-key ./keys/local/my_pubkey.pem --file-in /pa
 python vp.py -e d -pu ./keys/local/my_pubkey.pem -fi ./path/to/secrets_directory
 ```
 
+Decryption examples:
+```bash
+# Decrypt long form:
+python vp.py --decrypt dir --private-key ./keys/local/my_privkey.pem -fi ./path/to/encrypted_dir
+
+# Decrypt short form:
+python vp.py -d d -pr ./keys/local/my_privkey.pem -fi ./path/to/encrypted_dir
+```
+
 
 ---
 
 
 ### path
 
-`dir`
+`path`
 
-Encrypt a directory, without encrypting files found in any subdirectories. Optional RSA signature authentcation is available, but simply due to the fact the same function works behind the scenes to encrypt data. Logically, this operation is a tool for secure local data storage, alongwith the following operation, `path`. Note that any file within an encrypted directory or path can be unencrypted with the `--decrypt file` operation ([decrypt file](#decrypt-file)).
+Encrypt a path, recursively encrypting files found in any subdirectories. Optional RSA signature authentcation is available, but simply due to the fact the same function works behind the scenes to encrypt data. Logically, this operation is a tool for secure local data storage, alongwith the following operation, `dir`. Note that any file within an encrypted directory or path can be unencrypted with the `--decrypt file` operation ([file](#file)).
 
 
 Required Args:
-`--file-in` | `-fi`: The path to the directory that will be encrypted.
-`--public-key` | `-pu`: The RSA public key of the individual who will decrypt the directory.
+`--file-in` | `-fi`: The path that will be encrypted.
+`--public-key` | `-pu`: The RSA public key belonging to the individual who will decrypt the path.
 
 Optional args:
 `--private-key` | `-pr`: Optional RSA private key to include signature verification in the encryption process.
 
-Examples:
+Encryption examples:
 ```bash
-# Long form:
-python vp.py --encrypt dir --public-key ./keys/local/my_pubkey.pem --file-in /path/to/secrets_directory
+# Encrypt long form:
+python vp.py --encrypt path --public-key ./keys/local/my_pubkey.pem --file-in /path/to/secrets_path
 
-# Short form:
-python vp.py -e d -pu ./keys/local/my_pubkey.pem -fi ./path/to/secrets_directory
+# Encypt short form:
+python vp.py -e p -pu ./keys/local/my_pubkey.pem -fi ./path/to/secrets_path
+```
+
+Decryption examples:
+```bash
+# Decrypt long form:
+python vp.py --decrypt path --private-key ./keys/local/my_privkey.pem -fi ./path/to/encrypted_path
+
+# Decrypt short form:
+python vp.py -d p -pr ./keys/local/my_privkey.pem -fi ./path/to/encrypted_path
 ```
 
 
@@ -594,6 +629,9 @@ python vp.py --database --user Jedi
 `--target` | `-t`
 
 This runtime argument, like `--user`, can be used with multiple operating modes. For database operations it will be utilized to set nicknames when saving RSA public keys (optional) or the information to connect to remote servers (required).
+
+
+---
 
 
 ### add-key
