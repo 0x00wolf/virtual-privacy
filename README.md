@@ -60,6 +60,8 @@ pip install pycryptodome
 
 ## Host Operations
 
+`--server` | `-s` & `--client` | `-c`
+
 Both client and server operating modes feature 12 iterations on 3 host 
 archetypes: Command & Control (c2), File Transfers (FTP), & Chatroom (chat).
 
@@ -69,11 +71,34 @@ for the desired operating mode, and VP will select the correct host at
 runtime. For more information on VP's encryption options, see: 
 [VP Encryption Options](#vp-encryption-options). 
 
+Required Args:
+- Mode: `--client OPERATION` | `-c OPERATION` or `--server OPERATION` | `-s OPERATION`
+
+Optional Args:
+- `--host` | `-ip`: Hostname or IPv4 address. Defaults to loopback for testing, `127.0.0.1`.
+- `--port` | `-p`: Port number. Defaults to 1337.
+
+Operations:
+`c2`: See [c2](#c2)
+`ftp`: See [ftp](#ftp)
+`chat`: See [chat](#chat)
+
+Basic Usage:
+```bash
+# Long form:
+python vp.py --server OPERATION
+python vp.py --client OPERATION
+
+# Short form:
+python vp.py -s c2
+python vp.py -c c2
+```
+
 ---
 
 ### **c2**
 
-`c2`
+`python vp.py --server c2`
 
 VP's Command & Control mode sends a Pythonic reverse shell from the client 
 to the server. `subprocess.Popen['python', '-i', ,'import pty', 'pty.spawn('/bin/bash')]` The client runs 
@@ -86,7 +111,7 @@ smooth reverse shell experience, while encrypting data in transit.
 
 ### ftp
 
-`ftp`
+`python vp.py --client ftp`
 
 VP's ftp transfers allow for secure data transfer. Alternatively, you can 
 use VP's file encryption to encrypt a file in advance of transfer so that 
@@ -98,9 +123,11 @@ security.
 
 ### chat
 
-`chat`
+`python vp.py -s chat`
 
-VP's Chat is styled after an AOL chatroom from 1999, but with heavy layers of modern encryption. After a client connects, the server will decrypt messages from each client, and then broadcast them to every connected client, encrypting each with their respective credentials (depending on the encryption level in use). The chatroom uses multithreading, and is conceieably capable of handling hundreds if not thousands of concurrent hosts, although that isn't very secretive. 
+VP's Chat is styled after an AOL chatroom from 1999, but with heavy layers of modern encryption. 
+
+After a client connects, the server will decrypt messages from each client, and then broadcast them to every connected client, encrypting each with their respective credentials (depending on the encryption level in use). The chatroom uses multithreading, and is conceieably capable of handling hundreds if not thousands of concurrent hosts, although that isn't very secretive. 
 
 The Chatroom was the initial inspiration for this project. I thought it would be funny to create an AOL chatroom that would be suitable for high level threat actors. A lot of my projects begin this way. I had a silly idea that I started to build, and then realized cool things I could make it do.
 
