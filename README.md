@@ -17,7 +17,7 @@ You will find a comprehensive manual that will teach you how to use all of the e
 
 1) [Installation](#installation)
 2) [Host Operations](#host-operations)
-3) [VP Encryption Levels](#vp-encryption-levels)
+3) [Levels of Encryption](#levels-of-encryption)
 4) [Generate Credentials](#generate-credentials)
 5) [Database Operations](#database_operations)
 6) [Encryption & Decryption](#encryption_&_decryption_options)
@@ -79,11 +79,17 @@ Required Args:
 Optional Args:
 - `--host` | `-ip`: Hostname or IPv4 address. Defaults to loopback for testing, `127.0.0.1`.
 - `--port` | `-p`: Port number. Defaults to 1337.
+- `--only-ssl` | `-os`: Required for the server to use SSL without VPP. See: [Levels of Encryption](#levels-of-encryption)
+- `--target` | `-t`: Set the parameters for a saved target server in the runtime SQL database.
+- `--user` | `-u`: Generate a new, or reference an existing, SQL database. See: [user](#user)
+- `--private-key` | `-pr`: Path to the user's RSA private key.
+- `--public-key` | `-pu`: Path to the remote server's RSA public key.
+- `--certificate`: Path to the server's signed x509 certificate.
 
 Operations:
-`c2`: See [c2](#c2)
-`ftp`: See [ftp](#ftp)
-`chat`: See [chat](#chat)
+- `c2`: See [c2](#c2)
+- `ftp`: See [ftp](#ftp)
+- `chat`: See [chat](#chat)
 
 Basic Usage:
 ```bash
@@ -136,7 +142,7 @@ The Chatroom was the initial inspiration for this project. I thought it would be
 ---
 
 
-## VP Encryption Levels
+## Levels of Encryption
 
 1) [Base64](#base64)
 2) [SSL](#ssl)
@@ -217,14 +223,14 @@ For detailed information on generating an RSA keypair, see [Generate Credentials
 
 VPP authentication works as follows:
 
-Client-side:
+**Client-side:**
 
 1) The client’s plaintext RSA public key is signed using their private key.
 2) The Client’s plaintext public key is encrypted with a new 256-bit session key.
 3) The session key is wrapped with the server’s RSA public key.
 4) The wrapped session key is transmitted to the server.
 
-Server-side:
+**Server-side:**
 
 1) The server accepts a buffer containing the wrapped key & VP’s protocol header and attempts to unwrap the key.
 2) If the key was unwrapped, the server accepts a buffer of a size relative to information provided by the protocol header.
@@ -423,6 +429,13 @@ python vp.py -pki ca
 ```
 
 ---
+
+## Encryption and Decryption
+
+VP features the ability to encrypt or decrypt files, a single directory non-recursively, or a path recursively. You can also add signature authentication into the encryption process. You can then use 
+
+It was incredibly easy to add these features in, thanks the the crypter module included with VP. The crypter features lots of documentation, and I tried my best to develop it following best practices from Google's Python Style Guide, including docstrings etc.
+
 
 ## Database Operations
 
