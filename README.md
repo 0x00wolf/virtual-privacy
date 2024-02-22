@@ -73,6 +73,8 @@ runtime. For more information on VP's encryption options, see:
 
 ### **c2**
 
+`c2`
+
 VP's Command & Control mode sends a Pythonic reverse shell from the client 
 to the server. `subprocess.Popen['python', '-i', ,'import pty', 'pty.spawn('/bin/bash')]` The client runs 
 the shell in a subprocess and uses Pipes to funnel the stdin, stdout & 
@@ -84,6 +86,8 @@ smooth reverse shell experience, while encrypting data in transit.
 
 ### ftp
 
+`ftp`
+
 VP's ftp transfers allow for secure data transfer. Alternatively, you can 
 use VP's file encryption to encrypt a file in advance of transfer so that 
 only the intended recipient will be able to decrypt it. Pairing file 
@@ -93,6 +97,8 @@ security.
 ---
 
 ### chat
+
+`chat`
 
 VP's Chat is styled after an AOL chatroom from 1999, but with heavy layers of modern encryption. After a client connects, the server will decrypt messages from each client, and then broadcast them to every connected client, encrypting each with their respective credentials (depending on the encryption level in use). The chatroom uses multithreading, and is conceieably capable of handling hundreds if not thousands of concurrent hosts, although that isn't very secretive. 
 
@@ -180,16 +186,16 @@ The Virtual Privacy Protocol provides authenticity, confidentiality, and
 integrity. It utilizes hybrid encryption, and signature verification for each transmission. VPP requires that both parties have exchanged RSA public keys in advance. The server administrator must register the remote user's public key in the runtime SQL database in advance of the client connecting. See [Database Operations](#database_operations), specifically [add-key](#add_key). The client has to provide the server's RSA public key as a runtime argument. 
 For detailed information on generating an RSA keypair, see [Generate Credentials](#generate-credentials).
 
-**VPP authentication works as follows:**
+VPP authentication works as follows:
 
-Client side:
+Client-side:
 
 1) The client’s plaintext RSA public key is signed using their private key.
 2) The Client’s plaintext public key is encrypted with a new 256-bit session key.
 3) The session key is wrapped with the server’s RSA public key.
 4) The wrapped session key is transmitted to the server.
 
-Server side:
+Server-side:
 
 1) The server accepts a buffer containing the wrapped key & VP’s protocol header and attempts to unwrap the key.
 2) If the key was unwrapped, the server accepts a buffer of a size relative to information provided by the protocol header.
@@ -287,6 +293,8 @@ Certificate Authority.
 
 ### rsa
 
+`rsa`
+
 This function allows the user to generate a new RSA keypair, with optional 
 password encryption. 
 
@@ -342,6 +350,8 @@ python vp.py -pki ss -pr /path/privkey.pem --certificate ./my_certificate.crt
 
 ### **fast-gen**
 
+`fast-gen` | `fg`
+
 This operation instantly spits out the necessary credentials for 
 establishing a SSL encrypted connection, a new RSA private key and signed 
 x509 certificate.
@@ -366,6 +376,8 @@ python vp.py -pki fg
 
 ### **root-ca**
 
+`root-ca` | `ca`
+
 The `root-ca` operation allows users to interactively generate public 
 key infrastructure. The output from this operation includes creating a root 
 Certificate Authority, a server RSA keypair, and a CA signed certificate 
@@ -384,6 +396,8 @@ python vp.py -pki ca
 ---
 
 ## Database Operations
+
+`--database` | `db`
 
 VP is backed by a SQLite3 database, which will be generated at runtime if not found by the program. VPP requires that remote client's RSA public keys be added to the runtime SQL database. Beyond simply using the public keys for hybrid encryption, VPP uses the keys for authentication.
 
