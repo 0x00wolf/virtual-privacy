@@ -14,9 +14,9 @@ You will find a comprehensive manual that will teach you how to use all of the e
 ## Index:
 
 1) [Installation](#installation)
-2) [Host Operations](#host_operations)
-3) [VP Encryption Options](#vp_encryption_options)
-4) [Generate Credentials](#generate_credentials)
+2) [Host Operations](#host-operations)
+3) [VP Encryption Options](#vp-encryption-options)
+4) [Generate Credentials](#generate-credentials)
 5) [Database Operations](#database_operations)
 6) [Encryption & Decryption](#encryption_&_decryption_options)
 
