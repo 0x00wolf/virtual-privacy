@@ -49,9 +49,7 @@ cd ./virtual-privacy
 3) Create a virtual environment, activate it, and install pycryptodome:
 
 ```bash
-python -m venv venv
-source ./venv/bin/activate
-pip install pycryptodome
+python -m venv venv && source ./venv/bin/activate && pip install pycryptodome
 ```
 
 4) Generate some credentials, throw some reverse shells, and have fun!
