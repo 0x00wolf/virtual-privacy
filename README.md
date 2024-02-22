@@ -180,7 +180,7 @@ The Virtual Privacy Protocol provides authenticity, confidentiality, and
 integrity. It utilizes hybrid encryption, and signature verification for each transmission. VPP requires that both parties have exchanged RSA public keys in advance. The server administrator must register the remote user's public key in the runtime SQL database in advance of the client connecting. See [Database Operations](#database_operations), specifically [add-key](#add_key). The client has to provide the server's RSA public key as a runtime argument. 
 For detailed information on generating an RSA keypair, see [Generate Credentials](#generate-credentials).
 
-**VPP authentication wors as follows:**
+**VPP authentication works as follows:**
 
 Client side:
 
