@@ -176,13 +176,18 @@ actors while acquiring a foothold on a new network.
 
 **Leve 1: Base64 examples**
 
+Server-side:
 ```bash
 # Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337
 
 # Server-side short form:
 python vp.py -s c2 -ip 0.0.0.0 -p 1337
+```
 
+
+Client-side:
+```bash
 # Client-side long form:
 python vp.py --client c2 --host 192.168.2.15 --port 1337
 
@@ -216,13 +221,17 @@ immediately spit out everything you need.
 
 **Level 2: SSL examples**
 
+Server-side:
 ```bash
 # Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./key.pem --certificate ./cert.crt --only-ssl
 
 # Server-side short form:
 python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./key.pem -crt ./cert. -os
+```
 
+Client-side:
+```bash
 # Client-side short form:
 python vp.py --client c2 --host 192.168.2.15 --port 1337 --certificate ./cert.crt
 
@@ -275,13 +284,17 @@ To generate credentials for VPP, see: [rsa](#rsa)
 
 **Level 3: VPP Examples**
 
+Server-side:
 ```bash
 # Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./server_privkey.pem
 
 # Server-side short form:
 python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./server_privkey.pem
+```
 
+Client-side:
+```bash
 # Client-side short form:
 python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./my_privkey.pem --public-key ./server_pubkey.pem
 
@@ -304,13 +317,17 @@ VPP wrapped in TLSv1.3 for obfuscation and robust security.
 
 **Level 4: VPP & SSL Examples**
 
+Server-side:
 ```bash
 # Server-side long form:
 python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./keys/local/srvr_privkey.pem --certificate ./cert.crt
 
 # Server-side short form:
 python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./keys/local/srvr_privkey.pem -crt ./cert.
+```
 
+Client-side:
+```bash
 # Client-side short form:
 python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./keys/local/my_privkey.pem --public-key ./keys/remote/srvr_pubkey.pem --certificate ./cert.crt
 
