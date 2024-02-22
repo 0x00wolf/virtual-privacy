@@ -77,15 +77,23 @@ runtime. For more information on VP's encryption options, see:
 Required Args:
 - Mode: `--client OPERATION` | `-c OPERATION` or `--server OPERATION` | `-s OPERATION`
 
-Optional Args:
+Optional Sever Args:
 - `--host` | `-ip`: Hostname or IPv4 address. Defaults to loopback for testing, `127.0.0.1`.
 - `--port` | `-p`: Port number. Defaults to 1337.
 - `--only-ssl` | `-os`: Required for the server to use SSL without VPP. See: [Levels of Encryption](#levels-of-encryption)
-- `--target` | `-t`: Set the parameters for a saved target server in the runtime SQL database.
 - `--user` | `-u`: Generate a new, or reference an existing, SQL database. See: [user](#user)
 - `--private-key` | `-pr`: Path to the user's RSA private key.
-- `--public-key` | `-pu`: Path to the remote server's RSA public key.
 - `--certificate`: Path to the server's signed x509 certificate.
+
+Optional Client Args:
+- `--host` | `-ip`: Hostname or IPv4 address. Defaults to loopback for testing, `127.0.0.1`.
+- `--port` | `-p`: Port number. Defaults to 1337.
+- `--only-ssl` | `-os`: Required for the server to use SSL without VPP. See: [Levels of Encryption](#levels-of-encryption)
+- `--user` | `-u`: Generate a new, or reference an existing, SQL database. See: [user](#user)
+- `--private-key` | `-pr`: Path to the user's RSA private key.
+- `--public-key` | `-pu`: Path to the remote server's RSA public key. 
+- `--certificate`: Path to the server's signed x509 certificate.
+- `--target` | `-t`: Sets the saved parameters for `target` server nickname.
 
 Operations:
 - `c2`: See [c2](#c2)
