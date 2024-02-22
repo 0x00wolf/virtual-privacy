@@ -593,6 +593,9 @@ python vp.py -d p -pr ./keys/local/my_privkey.pem -fi ./path/to/encrypted_path
 ```
 
 
+---
+
+
 ## Database Operations
 
 `--database` | `db`
