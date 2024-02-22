@@ -65,7 +65,7 @@ pip install pycryptodome
 `--server` | `-s` & `--client` | `-c`
 
 Both client and server operating modes feature 12 iterations on 3 host 
-archetypes: Command & Control (c2), File Transfers (FTP), & Chatroom (chat).
+archetypes: Command & Control (c2), File Transfers (ftp), & Chatroom (chat).
 
 Each operating mode has 4 variations, relative to the different encryption 
 levels VP offers. The user simply needs to supply the required credentials 
