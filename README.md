@@ -57,7 +57,7 @@ pip install pycryptodome
 ---
 
 
-## **Host Operations**
+## Host Operations
 
 Both client and server operating modes feature 12 iterations on 3 host 
 archetypes: Command & Control (c2), File Transfers (FTP), & Chatroom (chat).
@@ -67,10 +67,6 @@ levels VP offers. The user simply needs to supply the required credentials
 for the desired operating mode, and VP will select the correct host at 
 runtime. For more information on VP's encryption options, see: 
 [VP Encryption Options](#vp-encryption-options). 
-
-1) [c2](#c2)
-2) [ftp](#ftp)
-3) [chat](#chat)
 
 ---
 
@@ -251,7 +247,7 @@ python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pu
 ---
 
 
-## **Generate Credentials**
+## Generate Credentials
 
 Credential operations can be accessed via the generate-pki runtime argument:
 
