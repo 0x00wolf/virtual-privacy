@@ -91,7 +91,7 @@ security.
 
 ---
 
-### Chat
+### chat
 
 VP's Chat is styled after an AOL chatroom from 1999, but with heavy layers of modern encryption. After a client connects, the server will decrypt messages from each client, and then broadcast them to every connected client, encrypting each with their respective credentials (depending on the encryption level in use). The chatroom uses multithreading, and is conceieably capable of handling hundreds if not thousands of concurrent hosts, although that isn't very secretive. 
 
