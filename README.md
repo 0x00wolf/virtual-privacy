@@ -272,7 +272,7 @@ python vp.py -pki [OPERATION]
 ```
 
 VP provides four options for users to generate credentials. The first option 
-uses pycryptodome to provide an option for generating RSA keys, including 
+uses pycryptodome to generate an RSA key pair, including 
 optional private key encryption using best practices. The remaining three 
 options are wrappers for OpenSSL, which allow VP users to credentials for 
 SSL on the fly, or establish more in depth PKI, including a root 
@@ -285,7 +285,7 @@ Certificate Authority.
 
 ---
 
-### **rsa**
+### rsa
 
 This function allows the user to generate a new RSA keypair, with optional 
 password encryption. 
@@ -310,7 +310,9 @@ python vp.py -pki rsa --private-key ./export/path/privkey.pem --public-key
 
 ---
 
-### **self-sign**
+### self-sign
+
+`self-sign` | `ss`
 
 This operation takes a preexisting RSA private key and uses it to produce a 
 self-signed x509 certificate for establishing SSL. 
@@ -353,7 +355,7 @@ Defaults:
 
 ```bash
 # Long form:
-python vp.py --generate-pki fast-generate
+python vp.py --generate-pki fast-gen
 
 # Short form:
 python vp.py -pki fg
