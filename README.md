@@ -1,6 +1,6 @@
 # Virtual-Privacy
 
-Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert communications over insecure networks, and secure data storage. VP features 4 levels of encryption, 24 host iterations (command and control, file transfers, and a chatroom), and a number of options for generating credentials. VP additonally offers the ability to encrypt a file, directory, or an entire path recursively. VP features a unique network security protocol that emulates and incorporates other widely addopted security protocols like SSH, PGP, and SSL. 
+Virtual-Privacy (VP) is a Pythonic Swiss army knife for conducting covert communications over insecure networks, and secure data storage. VP features 4 levels of encryption, 24 host iterations (command and control, file transfers, and a chatroom), and a number of options for generating credentials. VP additonally offers the ability to encrypt a file, directory, or an entire path recursively. VP features a unique network security protocol that emulates and incorporates popular protocols like SSH, PGP, and SSL. 
 
 It should be noted, the host operation, chat, is styled after AOL chat rooms circa 1999, but with the added feature of layered encryption to create a communication medium suitable for individuals working in contemporary spycraft.
 
@@ -250,16 +250,16 @@ VPP wrapped in TLSv1.3 for obfuscation and robust security.
 
 ```bash
 # Server-side long form:
-python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./server_privkey.pem --certificate ./cert.crt
+python vp.py --server c2 --host 0.0.0.0 --port 1337 --private-key ./keys/local/srvr_privkey.pem --certificate ./cert.crt
 
 # Server-side short form:
-python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./server_privkey.pem -crt ./cert.
+python vp.py -s c2 -ip 0.0.0.0 -p 1337 -pr ./keys/local/srvr_privkey.pem -crt ./cert.
 
 # Client-side short form:
-python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./my_privkey.pem --public-key ./server_pubkey.pem --certificate ./cert.crt
+python vp.py --client c2 --host 192.168.2.15 --port 1337 --private-key ./keys/local/my_privkey.pem --public-key ./keys/remote/srvr_pubkey.pem --certificate ./cert.crt
 
 # Client-side short form:
-python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./my_privkey.pem -pu ./server_pubkey.pem -crt ./cert.crt
+python vp.py -c c2 -ip 192.168.2.15 -p 1337 -pr ./keys/local/my_privkey.pem -pu ./keys/remote/srvr_pubkey.pem -crt ./cert.crt
 ```
 
 ---
@@ -313,7 +313,7 @@ python vp.py --generate-pki rsa
 python vp.py -pki rsa
 
 # Optional, supply export paths in advance: 
-python vp.py -pki rsa --private-key ./export/path/privkey.pem --public-key  
+python vp.py -pki rsa --private-key ./keys/local/my_privkey.pem --public-key  ./keys/local/my_pubkey.pem
 ```
 
 ---
@@ -337,13 +337,13 @@ Default export path:
 
 ```bash
 # Long form:
-python vp.py --generate-pki self-sign --private-key ./path/privkey.pem  
+python vp.py --generate-pki self-sign --private-key ./keys/local/srvr_privkey.pem  
 
 # Short form:
-python vp.py -pki ss -pr ./path/privkey.pem
+python vp.py -pki ss -pr ./local/srvr_privkey.pem
 
 # With an optional export path for the certificate
-python vp.py -pki ss -pr /path/privkey.pem --certificate ./my_certificate.crt
+python vp.py -pki ss -pr ./keys/local/srvr_privkey.pem --certificate ./keys/local/srvr_cert.crt
 ```
 
 ---
@@ -413,3 +413,181 @@ VP is backed by a SQLite3 database, which will be generated at runtime if not fo
 10) [delete-target](#delete-target)
 11) [show-tables](#show-tables)
 
+---
+
+### add-key
+
+`add-key`
+
+Add a remote client's RSA public key to the runtime SQL database.
+
+Required Args:
+- `--public-key` | `-pr`: The remote user's RSA public key.
+
+Optional Args:
+- `--target` | `-t`: Set a nickname for the public key.
+
+Example:
+
+```bash
+# Long form:
+python vp.py --database add-key --public-key ./keys/remote/bobcats_pubkey.pem --target Bobcat
+
+# Short form:
+python vp.py -db ak -pu ./keys/remote/bobcats_pubkey.pem -t Bobcat
+```
+
+---
+
+### show-key
+
+`show-key` | `sk`    
+
+Show a saved public key by ID or nickname.
+
+Args:
+- `--target` | `-t`: The target nickname or ID number (shown at creation if no nickname is supplied).
+
+Example:
+
+```bash
+# Long form:
+python vp.py --database show-key --target Jedi
+
+# Short form:
+python vp.py -db sk -t Bobcat
+```
+
+---
+
+### show-keys
+
+`show-keys`
+
+Displays information about all the stored keys.
+
+```bash
+# Long form:
+python vp.py --database show-keys
+
+# Short form:
+python vp.py -db show-keys
+```
+
+---
+
+### delete-key
+
+`delete-key`
+
+Args:
+- `--target` | `-t`: The target nickname or ID number (shown at creation if no nickname is supplied).
+
+Example:
+
+```bash
+# Long form:
+python vp.py --database delete-key --target Bobcat
+
+# Short form:
+python vp.py -db sk -t Jedi
+```
+
+---
+
+### add-server
+
+`add-server` | `as`    
+
+Save connection information for a remote server in the SQL database. Use the `--target` option at runtime to initiailize the variables.
+
+Args: 
+- `--target` | `-t`: Server's nickname.
+- `--host` | `-ip`: The hostname or IPv4 address.
+- `--port` | `-p`: The port.
+
+Optional Args:
+- `--public-key` | `-pu`: The path to the server's public key. 
+- `--certificate` | `-crt`: The path to the server's signed x509 certificate.
+
+Example:
+
+```bash
+# Long form:
+python vp.py --database add-server --target Jedi --host www.jedibuddy.com --port 1337 --public-key ./keys/remote/jedi_public.pem --certificate ./keys/remote/jedi_cert.crt
+
+# Short form:
+python vp.py -db as -t Jedi -ip www.jedibuddy.com -p 1337 -pu ./keys/remote/jedi_public.pem -crt ./keys/remote/jedi_cert.crt
+```
+
+---
+
+### show-server
+
+`show-server` | `ss`
+
+ - Requires: `--target` | `-t`:  The target nickname.
+
+Example:
+
+```bash
+# Short form:
+python vp.py --database show-server --target Bobcat
+
+# Long form:
+python vp.py -db ss -t Bobcat
+```
+
+---
+
+### delete-server
+
+`delete-server`
+
+Deletes a target server based on a supplied `--target` nickname.
+
+Args:
+- `--target` | `-t`: The target nickname.
+
+Example:
+
+```bash
+# Long form:
+python vp.py --database delete-key --target Bobcat
+
+# Short form:
+python vp.py -db sk -t Jedi
+```
+
+---
+
+### show-servers
+
+`show-servers`
+
+Displays information about all the stored servers.
+
+```bash
+# Long form:
+python vp.py --database show-servers
+
+# Short form:
+python vp.py -db show-servers
+```
+
+
+
+### user
+
+`--user` | `-u`
+
+Set the name key to initialize a new SQL database, or reference a pre-existing database. 
+
+Exports to the data directory, found within VP's parent folder.
+
+Example:
+```bash
+# Long form:
+python vp.py --database --user Jedi
+```
+---
