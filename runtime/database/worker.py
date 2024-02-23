@@ -27,7 +27,7 @@ def worker(arguments, database_path):
                 nickname=arguments.target,
                 host=arguments.host,
                 port=arguments.port,
-                public_pem=arguments.public,
+                public_pem=arguments.public_key,
                 certificate=arguments.certificate,
                 database_path=database_path)
 
