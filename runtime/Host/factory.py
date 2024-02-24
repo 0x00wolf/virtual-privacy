@@ -118,7 +118,7 @@ def factory(mode, operation, arguments, database_path):
                     private_key=private_key,
                     database_path=database_path
                 )
-            elif file_in and certificate_crt and private_pem:
+            elif file_in and certificate_crt and private_pem and only_ssl:
                 return network.host.FTPSSL.Server(
                     host=host,
                     port=port,
