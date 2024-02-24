@@ -47,7 +47,7 @@ class Server:
                 raise NetworkError(message=f"{e}")
             sock.listen()
             with context.wrap_socket(sock, server_side=True) as ssock:
-                print(f"[*] SSL & VPP encrypted Chatroom Server listening "
+                print(f"[*] VPP wrapped in SSL encrypted Chatroom Server listening "
                       f"on ~"
                       f" {self.host}:{self.port}.")
                 while True:
