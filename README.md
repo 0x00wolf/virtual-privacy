@@ -117,8 +117,11 @@ python vp.py -c c2
 `python vp.py --server c2`
 
 VP's Command & Control mode sends a Pythonic reverse shell from the client 
-to the server. `subprocess.Popen['python', '-i', ,'import pty', 'pty.spawn('/bin/bash')]` The client runs 
-the shell in a subprocess and uses Pipes to funnel the stdin, stdout & 
+to the server:
+
+`subprocess.Popen['python', '-i', ,'import pty', 'pty.spawn('/bin/bash')]` 
+
+The client runs the shell in a subprocess and uses Pipes to funnel the stdin, stdout & 
 stderr over the network connection, allowing VP to encrypt the data streams 
 in the process. VP uses multithreading, pipes, and queues to create a 
 smooth reverse shell experience, while encrypting data in transit.  
