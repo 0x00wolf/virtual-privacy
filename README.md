@@ -558,7 +558,7 @@ python vp.py -d f -pr ./keys/local/my_privkey.pem -fi ./path/to/secret4bobcat.en
 
 `dir`
 
-Encrypt a directory, without encrypting files found in any subdirectories. Optional RSA signature authentcation is available, but simply due to the fact the same function works behind the scenes to encrypt data. Logically, this operation is a tool for local secure data storage, along with the `path` operation, and not particularly useful for network file transfers more so than any other operation modes. Note that any file within an encrypted directory or path can be unencrypted with the `--decrypt file` operation ([decrypt file](#decrypt-file)).
+Encrypt a directory, without encrypting files found in any subdirectories. Optional RSA signature authentcation is available, but simply due to the fact the same function works behind the scenes to encrypt data. Logically, this operation is a tool for local secure data storage, along with the `path` operation. Other operating modes have equal utility for secure file transfers. Note that any file within an encrypted directory or path can be unencrypted with the `--decrypt file` operation ([decrypt file](#decrypt-file)).
 
 
 Required Args:
