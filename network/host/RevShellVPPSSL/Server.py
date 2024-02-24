@@ -43,7 +43,7 @@ class Server:
                 raise NetworkError(message=f"{e}")
             sock.listen(1)
             with context.wrap_socket(sock, server_side=True) as ssock:
-                print(f"[*] VPP & SSL encrypted C2 Server listening on ~ "
+                print(f"[*] SSL wrapped in VPP encrypted C2 Server listening on ~ "
                       f"{self.host}:{self.port} {self.datestamp()}")
                 while True:
                     try:
