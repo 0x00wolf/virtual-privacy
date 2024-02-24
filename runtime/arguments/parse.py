@@ -337,12 +337,5 @@ def parse():
     mode = mode.upper()
     print(f"[ ] Mode: {mode}")
 
-    # If not RSA Keypair, print the operation.
-    if mode == 'RSA KEYPAIR':
-        pass
-    else:
-        operation = operation.replace('_', ' ')
-        operation = operation.upper()
-        print(f"[ ] Operation: {operation}")
     return mode, operation, args
 
