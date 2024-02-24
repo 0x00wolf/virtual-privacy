@@ -118,7 +118,7 @@ def factory(mode, operation, arguments, database_path):
                     private_key=private_key,
                     database_path=database_path
                 )
-            elif file_in and certificate_crt and private_pem and only_ssl:
+            elif file_in and certificate_crt and private_pem:
                 return network.host.FTPSSL.Server(
                     host=host,
                     port=port,
@@ -174,7 +174,7 @@ def factory(mode, operation, arguments, database_path):
                             "client operation.")
     elif operation == 'c2':
         if mode == 'server':
-            if certificate_crt and private_key and not only_ssl:
+            if certificate_crt and private_key:
                 return network.host.RevShellVPPSSL.Server(
                     host=host,
                     port=port,
@@ -190,7 +190,7 @@ def factory(mode, operation, arguments, database_path):
                     private_key=private_key,
                     database_path=database_path
                 )
-            elif certificate_crt and private_pem and only_ssl:
+            elif certificate_crt and private_pem:
                 return network.host.RevShellSSL.Server(
                     host=host,
                     port=port,
