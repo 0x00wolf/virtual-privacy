@@ -45,7 +45,7 @@ class Server:
             except (PermissionError, OSError) as e:
                 raise NetworkError(message=f"{e}")
             with context.wrap_socket(sock, server_side=True) as ssock:
-                print(f"[*] SSL encrypted FTP Server listening on ~ "
+                print(f"[*] SSL wrapped in VPP encrypted FTP Server listening on ~ "
                       f"{self.host}:{self.port} {self.datestamp()}")
                 try:
                     while True:
