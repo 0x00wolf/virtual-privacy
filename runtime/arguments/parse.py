@@ -3,8 +3,7 @@ import argparse
 from runtime.VPRuntimeError import VPRuntimeError
 
 
-MODES = ['client', 'server', 'database', 'generate_pki', 'rsa_keypair',
-         'encrypt', 'decrypt']
+MODES = ['client', 'server', 'database', 'generate_pki', 'encrypt', 'decrypt']
 HOST_OPERATIONS = ['c2', 'ftp', 'chat']
 ENCRYPTION_CHOICES = ['file', 'f', 'dir', 'd', 'path', 'p']
 ENCRYPTION_ASSIGNMENTS = {
